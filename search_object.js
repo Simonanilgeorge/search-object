@@ -1,19 +1,25 @@
 
-
 let input={
 
-    "string_key":"string_test"
-    ,"number_key":10
-    ,"nested_object":{
+    "name":"rfk",
+    "age":10
+    ,"address":{
+        "street":"grove street"
+        ,"second address":{
+            "street":"This is the second address"
+        }
+        ,"array":[{
 
-        "nested_object_string":"test"
-        ,"nested_object_number":20
+            "name":"abc"
+        },{
+            "name":"def"
+        }],
+        "second_array":["test","testing"]
+        ,"2d_array":[["inside 2d","inside 2d second"]]
+        ,"3d_array":[[["3d 1st","3rd 2nd"]]]
     }
-    ,"array_key":[1,2,3,4,5]
-    ,"string_array_key":["a","b","test","c"]
 }
-
-let value = "test"
+let value = "3d 1st"
 
 
 if (!combination(input, [])) {
@@ -95,7 +101,19 @@ function combination(data, path) {
 
                 // if the value inside the array is not an object then it can be another array or string or number !did not write logic to check for values inside a 2d array. Instead check if the element itself is the value you are looking for
 
-                else if(element==value){
+                // search inside the array
+                else if (typeof(element)=="object" && Array.isArray(element)){
+
+                    path.push(key)
+                    path.push(j)
+                    if(combination(element,path)){
+                        return true
+                    }
+                    path.pop()
+                    path.pop()
+                }
+
+                else if(typeof(element)!="object" && element==value){
                         path.push(key)
                         path.push(j)
                         constructPath(path)
@@ -110,3 +128,42 @@ function combination(data, path) {
     }
     return false
 }
+
+
+ 
+// // to get list of all tables
+// let tables=input['model']['tables']
+ 
+// for(let table of tables){
+ 
+//     if('measures' in table){
+ 
+//         console.log(`${table.name} -- MEASURES --\n`)
+//         for(let measure of table.measures){
+//             console.log(measure.name)
+//         }
+//         console.log("\n")
+//     }
+ 
+ 
+//     let columns=table.columns
+ 
+//     // console.log(columns)
+//     let calculatedColumns=[]
+//     for(let column of columns){
+ 
+//         if ('type' in column && column.type=='calculated'){
+//             calculatedColumns.push(column)
+//         }  
+//     }
+ 
+//     if(calculatedColumns.length){
+ 
+//         console.log(`-- CALCULATED COLUMNS IN ${table.name} --`)
+//         for (let column of calculatedColumns){
+ 
+//             console.log(column.name)
+//         }
+//     }
+//     console.log("\n")
+// }
